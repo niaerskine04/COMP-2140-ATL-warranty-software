@@ -1,5 +1,8 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -8,8 +11,16 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.List;
+import java.util.Scanner;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class HomeScreenGUI extends JFrame {
     private static final String USER_FILE_PATH = "CustomerFile.txt";
@@ -26,7 +37,7 @@ public class HomeScreenGUI extends JFrame {
     private JButton loginButton = new JButton("Login");
     private JButton CloseButton = new JButton("X");
     private TicketListing tlisting;
-    
+
     public HomeScreenGUI() {
         // Set frame properties
         setSize(500, 200);
@@ -143,8 +154,8 @@ public class HomeScreenGUI extends JFrame {
 
         // Perform authentication based on the entered ID and password
         if (authenticateUser(customerID, password)) {
-        JOptionPane.showMessageDialog(loginFrame, "Login successful!");
-        openCustomerscreen(customerID);
+            JOptionPane.showMessageDialog(loginFrame, "Login successful!");
+            openCustomerscreen(customerID);
         } else {
             JOptionPane.showMessageDialog(loginFrame, "Login failed. Invalid credentials.");
         }
@@ -155,10 +166,10 @@ public class HomeScreenGUI extends JFrame {
         String workerID = JOptionPane.showInputDialog(loginFrame, "Enter ID:");
         String password = JOptionPane.showInputDialog(loginFrame, "Enter Password:");
 
-        //Perform authentication based on the entered ID and password
+        // Perform authentication based on the entered ID and password
         if (authenticateWorker(workerID, password)) {
-        JOptionPane.showMessageDialog(loginFrame, "Login successful!");
-        openCustomerscreen(Customer.ID);
+            JOptionPane.showMessageDialog(loginFrame, "Login successful!");
+            openCustomerscreen(Customer.ID);
 
         } else {
             JOptionPane.showMessageDialog(loginFrame, "Login failed. Invalid credentials.");
@@ -172,10 +183,10 @@ public class HomeScreenGUI extends JFrame {
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
                 String[] tokens = line.split(",");
-    
+
                 String iD = tokens[0];
                 String pw = tokens[2];
-    
+
                 if (iD.equals(userID) && pw.equals(password)) {
                     return true;
                 }
@@ -184,35 +195,33 @@ public class HomeScreenGUI extends JFrame {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
-    
+
     /*
-        try (BufferedReader reader = new BufferedReader(new
-            FileReader(USER_FILE_PATH))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Split the line into user ID and password
-                String[] parts = line.split(",");
-                if (parts.length == 2) {
-                    String storedUserID = parts[0].trim();
-                    String storedPassword = parts[2].trim();
-        
-                    // Check if the user ID and password match
-                    if (storedUserID.equals(userID) && storedPassword.equals(password)) {
-                        return true;
-                    }
-                }
-            }
-        } catch (IOException e) {
-        e.printStackTrace();
-        }
-        return false; 
-    }
-    */
-    
-    
-    
+     * try (BufferedReader reader = new BufferedReader(new
+     * FileReader(USER_FILE_PATH))) {
+     * String line;
+     * while ((line = reader.readLine()) != null) {
+     * // Split the line into user ID and password
+     * String[] parts = line.split(",");
+     * if (parts.length == 2) {
+     * String storedUserID = parts[0].trim();
+     * String storedPassword = parts[2].trim();
+     * 
+     * // Check if the user ID and password match
+     * if (storedUserID.equals(userID) && storedPassword.equals(password)) {
+     * return true;
+     * }
+     * }
+     * }
+     * } catch (IOException e) {
+     * e.printStackTrace();
+     * }
+     * return false;
+     * }
+     */
+
     private boolean authenticateWorker(String workerID, String password) {
         try (BufferedReader reader = new BufferedReader(new FileReader(WORKER_FILE_PATH))) {
             String line;
@@ -235,48 +244,47 @@ public class HomeScreenGUI extends JFrame {
         return false;
     }
 
-public class CheckIDAndPassword {
+    public class CheckIDAndPassword {
 
-    public static void main(String[] args) {
-        // Specify the path to your file
-        String filePath = "CustomerFile";
+        public static void main(String[] args) {
+            // Specify the path to your file
+            String filePath = "CustomerFile";
 
-        // Specify the target user ID and password to check
-        String targetUserId = "620001";
-        String targetPassword = "Letm3$"; // Password to check
+            // Specify the target user ID and password to check
+            String targetUserId = "620001";
+            String targetPassword = "Letm3$"; // Password to check
 
-        // Check if the ID and password match in the file
-        boolean credentialsMatch = checkIDAndPassword(filePath, targetUserId, targetPassword);
+            // Check if the ID and password match in the file
+            boolean credentialsMatch = checkIDAndPassword(filePath, targetUserId, targetPassword);
 
-        if (credentialsMatch) {
-            System.out.println("ID and password match in the file.");
-        } else {
-            System.out.println("ID and password do not match or user not found in the file.");
+            if (credentialsMatch) {
+                System.out.println("ID and password match in the file.");
+            } else {
+                System.out.println("ID and password do not match or user not found in the file.");
+            }
         }
-    }
 
-    // Function to check if the ID and password match in the file
-    private static boolean checkIDAndPassword(String filePath, String targetUserId, String targetPassword) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Check if the line contains the target user ID
-                if (line.contains("ID Number:" + targetUserId)) {
-                    // Check the next line for the password
-                    String nextLine = reader.readLine();
-                    if (nextLine != null && nextLine.contains("Password:" + targetPassword)) {
-                        return true; // ID and password match
+        // Function to check if the ID and password match in the file
+        private static boolean checkIDAndPassword(String filePath, String targetUserId, String targetPassword) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Check if the line contains the target user ID
+                    if (line.contains("ID Number:" + targetUserId)) {
+                        // Check the next line for the password
+                        String nextLine = reader.readLine();
+                        if (nextLine != null && nextLine.contains("Password:" + targetPassword)) {
+                            return true; // ID and password match
+                        }
                     }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            return false; // ID and password do not match or user not found
         }
-
-        return false; // ID and password do not match or user not found
     }
-}
-
 
     private void openCustomerscreen(String userID) {
         JFrame mainFrame = new JFrame("Welcome " + userID);
@@ -297,7 +305,7 @@ public class CheckIDAndPassword {
         b.add(productLB);
         b.add(scheduleB);
         b.add(notifB);
-        b.add()
+        b.add(ticket);
 
         // Set frame properties
         mainFrame.setSize(300, 200);
@@ -306,21 +314,22 @@ public class CheckIDAndPassword {
         mainFrame.setVisible(true);
 
         // private List<String> getProductList(String userID) {
-        //     List<String> productList = new ArrayList<>();
-    
-        //     // Assuming each user has a file named with their userID, e.g., "620000.txt"
-        //     String filePath = userID + ".txt";
-    
-        //     try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-        //         String line;
-        //         while ((line = reader.readLine()) != null) {
-        //             productList.add(line);
-        //         }
-        //     } catch (IOException e) {
-        //         e.printStackTrace(); // Handle the exception according to your application's requirements
-        //     }
-    
-        //     return productList;
+        // List<String> productList = new ArrayList<>();
+
+        // // Assuming each user has a file named with their userID, e.g., "620000.txt"
+        // String filePath = userID + ".txt";
+
+        // try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        // String line;
+        // while ((line = reader.readLine()) != null) {
+        // productList.add(line);
+        // }
+        // } catch (IOException e) {
+        // e.printStackTrace(); // Handle the exception according to your application's
+        // requirements
+        // }
+
+        // return productList;
         // }
 
         warrantyB.addActionListener(new ActionListener() {
@@ -328,6 +337,7 @@ public class CheckIDAndPassword {
             public void actionPerformed(ActionEvent e) {
                 // Show table or list of availiable warranty;
                 SelectWarranty warrantyB = new SelectWarranty("customerid");
+                warrantyB.setVisible(true);
             }
         });
 
@@ -336,6 +346,7 @@ public class CheckIDAndPassword {
             public void actionPerformed(ActionEvent e) {
                 // Handle register button click
                 ProductList List = new ProductList("620000");
+                List.setVisible(true);
             }
         });
 
@@ -344,6 +355,7 @@ public class CheckIDAndPassword {
             public void actionPerformed(ActionEvent e) {
                 // Handle register button click
                 ServiceSchedulerGUI service = new ServiceSchedulerGUI();
+                scheduleB.setVisible(true);
             }
         });
 
@@ -352,14 +364,16 @@ public class CheckIDAndPassword {
             public void actionPerformed(ActionEvent e) {
                 // Handle register button click
                 ShowNotification notifi = new ShowNotification();
+                notifB.setVisible(true);
             }
         });
         ticket.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Handle register button click
-                AddVehicle addv = new AddVehicle(tlisting);  
-                System.out.println(addv);          
+                AddTicket addv = new AddTicket(tlisting);
+                ticket.setVisible(true);
+                System.out.println(addv);
             }
         });
     }
