@@ -298,6 +298,7 @@ public class HomeScreenGUI extends JFrame {
         JButton scheduleB = new JButton("Schedule Servicing");
         JButton notifB = new JButton("Notifications");
         JButton ticket = new JButton("Add Support Ticket");
+        JButton payment = new JButton(" Pay for Warranty");
 
         // Add buttons to the main frame
         b.setLayout(new GridLayout(2, 1));
@@ -306,6 +307,7 @@ public class HomeScreenGUI extends JFrame {
         b.add(scheduleB);
         b.add(notifB);
         b.add(ticket);
+        b.add(payment);
 
         // Set frame properties
         mainFrame.setSize(300, 200);
@@ -370,11 +372,27 @@ public class HomeScreenGUI extends JFrame {
         ticket.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle register button click
-                AddTicket addv = new AddTicket(tlisting);
+                new TicketListing();
                 ticket.setVisible(true);
-                System.out.println(addv);
+            }
+        });
+        payment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> packages = new ArrayList<>();
+                packages.add("Regular");
+                packages.add("Premium1");
+                packages.add("Premium2");
+                /*
+                 * Customer customer= new Customer(620000,John Brown,Letm3$,876-881-8812,Premium
+                 * 1,11/10/2023,ACTIVE,Television Blender Fridge,1200_3540_6630,11/12/2023,2:00
+                 * pm);
+                 * )
+                 * new Payment(620000, packages);
+                 * payment.setVisible(true);
+                 */
             }
         });
     }
 }
+
